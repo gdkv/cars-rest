@@ -13,7 +13,8 @@
              * Method, URI, array(Controller name, Controller method)
              */
             $this->urls = [
-                ['GET', '/test', ['CarController', 'list']],
+                ['GET', '/test', ['UserController', 'list']],
+                ['POST', '/user/login', ['UserController', 'login']],
             ];
             // yaml_parse_file()
         }

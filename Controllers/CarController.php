@@ -10,7 +10,7 @@
         {
             $cars = new Car();
             $this->renderJson(
-                $cars->findByID('3')
+                $cars->findAll()
             );
         }
     }
