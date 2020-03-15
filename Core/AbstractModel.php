@@ -27,10 +27,23 @@
             $qb = $this->em->createQueryBuilder();
 
             return $qb
-                ->select('id', 'brand', 'equipment', 'model', 'specifications', 'year')
-                ->from('car')
+                ->select('*')
+                ->from($this->tbName)
                 ->execute()
                 ->fetchAll();
+        }
+
+        public function findByID($id)
+        {
+            $qb = $this->em->createQueryBuilder();
+
+            return $qb
+                ->select('*')
+                ->from($this->tbName, 't')
+                ->where('t.id = :id')
+                ->setParameter('id', $id)
+                ->execute()
+                ->fetch();
         }
     }
 ?>
