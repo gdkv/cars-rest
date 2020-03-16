@@ -1,6 +1,8 @@
 <?php
     namespace Core;
     use \Config\DB;
+    use \Doctrine\DBAL\Cache\QueryCacheProfile;
+    use \Doctrine\DBAL\FetchMode;
 
     class AbstractModel
     {
@@ -16,21 +18,40 @@
          */
         public $qb;
 
+        public $dbCache;
+
         public function __construct()
         {
             $connection = new DB();
             $this->em = $connection->getDb();
+            $this->dbCache = $connection->cache;
         }
 
         public function findAll()
         {
             $qb = $this->em->createQueryBuilder();
+            $cacheID = $this->tbName . "_list";
 
-            return $qb
+            $config = $this->em->getConfiguration();
+            $config->setResultCacheImpl($this->dbCache);
+
+            $qb
                 ->select('*')
-                ->from($this->tbName)
-                ->execute()
-                ->fetchAll();
+                ->from($this->tbName);
+                // ->execute()
+                // ->fetchAll();
+            $stmt = $this->em->executeCacheQuery(
+                $qb->getSql(), 
+                [], 
+                [], 
+                new QueryCacheProfile(120, $cacheID)
+            );
+            $data = $stmt->fetchAll();
+            $stmt->closeCursor(); // at this point the result is cached
+
+            // $data = $this->dbCache->fetch($cacheID);
+
+            return $data;
         }
 
         public function findByID($id)

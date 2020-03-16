@@ -39,7 +39,7 @@
             }
             if ($persist['brand'] && $persist['model'] && $persist['equipment']  && $persist['year']){
                 $result = $cars->add($persist);
-                $this->renderJson(['success' => true, 'data' => $result,]);
+                $this->renderJson(['status' => true, 'data' => $result,]);
             }
             $this->renderJson(['success' => false]);
         }
@@ -52,7 +52,7 @@
             }
             if ($persist['brand'] && $persist['model'] && $persist['equipment']  && $persist['year']){
                 $result = $cars->edit($persist);
-                $this->renderJson(['success' => true, 'data' => $result,]);
+                $this->renderJson(['status' => true, 'data' => $result,]);
             }
             $this->renderJson(['success' => false]);
         }

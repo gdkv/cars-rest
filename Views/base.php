@@ -48,8 +48,6 @@
     </nav>
     <main role="main" class="container mt-5 mb-5">
         <?php
-            echo phpinfo();
-            die;
             echo $content;
         ?>
     </div>
