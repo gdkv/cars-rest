@@ -8,7 +8,17 @@
 </head>
 <body class="bg-light">
     <nav class="navbar navbar-dark navbar-expand-md sticky-top bg-dark p-1">
-        <a class="navbar-brand col-sm-3 col-md-2 mr-0"href="/">Car REST API</a>
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/admin/cars/list">Car REST API</a>
+        <div class="w-25 order-1 order-md-0">
+            <ul class="nav navbar-nav">
+                <li class="nav-item text-nowrap">
+                    <a class="nav-link" href="/admin/cars/list">Машины</a>
+                </li>
+                <li class="nav-item text-nowrap">
+                    <a class="nav-link" href="/admin/storage/list">Склады</a>
+                </li>
+            </ul>
+        </div> 
         <div class="w-100 order-1 order-md-0">
             <ul class="nav nav-pills">
                 <li class="nav-item text-nowrap mr-2">
@@ -18,21 +28,21 @@
                     <a class="nav-link active" href="/admin/storage/add">Добавить состояние склада</a>
                 </li>
             </ul>
-        </div>
+        </div> 
         <div class="order-2 order-md-1">
             <ul class="navbar-nav px-3">
-                
+                <?php if($user): ?>
                 <li class="nav-item text-nowrap">
-                    <a class="nav-link" href="/auth/logout">Sign out</a>
+                    <a class="nav-link" href="/admin/logout">Выход</a>
                 </li>
                 <li class="nav-item text-nowrap">
-                    <a class="nav-link disabled"><?php echo '$USER->getName()'; ?></a>
+                    <a class="nav-link disabled"><?php echo $user['login']; ?></a>
                 </li>
-                
+                <?php else: ?>
                 <li class="nav-item text-nowrap">
-                    <a class="nav-link" href="/auth/login">Sign in</a>
+                    <a class="nav-link" href="/admin/login">Войти</a>
                 </li>
-                
+                <?php endif; ?>
             </ul>
         </div>
     </nav>
@@ -55,7 +65,9 @@
                     url: t.attr('action'),
                     data: formData,
                     success: function(data){
-                        console.log(data);
+                        if(data.status){
+                            window.location = "/admin/cars/list";
+                        }
                     },
                     dataType: "json",
                     contentType : "application/json"

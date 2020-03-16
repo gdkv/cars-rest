@@ -3,6 +3,7 @@
 
     use \Core\AbstractController;
     use \Model\Car;
+    use \Core\Helpers;
 
     class CarController extends AbstractController
     {
@@ -49,6 +50,7 @@
 
         public function adminList()
         {
+            Helpers::checkPermission();
             $cars = new Car();
             $this->render(
                 'Car/list.php',
@@ -62,26 +64,34 @@
                 ], $cars->findAll()), ]
             );
         }
+
         public function adminAdd()
         {
+            Helpers::checkPermission('MANAGER_USER');
             $this->render(
                 'Car/add.php',
                 []
             );
         }
+
         public function adminEdit($id)
         {
+            Helpers::checkPermission('MANAGER_USER');
             $cars = new Car();
             $this->render(
                 'Car/edit.php',
                 ["car" => $cars->findByID($id)]
             );
         }
+        
         public function adminDelete($id)
         {
-            $cars = new Car();
-            $cars->delete((int)$id);
-            header("Location: /admin/cars/list");
+            if (Helpers::checkPermission('SUPER_USER')){
+                $cars = new Car();
+                $cars->delete((int)$id);
+                header("Location: /admin/cars/list");
+            }
+            
         }
     }
 ?>

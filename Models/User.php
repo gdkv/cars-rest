@@ -2,6 +2,8 @@
     namespace Model;
 
     use Core\AbstractModel;
+    use \Firebase\JWT\JWT;
+    use \Core\Helpers;
 
     class User extends AbstractModel
     {
@@ -20,5 +22,19 @@
                 ->fetch();
         }
 
+        public function isAuth($jwt="")
+        {
+            if($jwt || isset($_COOKIE['jwt'])) {
+                try {
+                    $jwt = ($jwt ? $jwt : $_COOKIE['jwt']);
+                    $decoded = JWT::decode($jwt, Helpers::SECRET_KEY, ['HS256']);
+                    return $this->findByID($decoded->data->userID);
+                }
+                catch (\Exception $e){
+                    return false;
+                }
+            }
+            return false;
+        }
     }
 ?>

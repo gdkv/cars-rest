@@ -30,5 +30,47 @@
                 ->execute()
                 ->fetchAll();
         }
+
+        public function add($persist)
+        {
+            $qb = $this->em->createQueryBuilder();
+
+            return $qb
+                ->insert('storage')
+                ->setValue('car', ':car')
+                ->setValue('status', ':status')
+                ->setValue('count', ':count')
+                ->setParameter('car', $persist['car'])
+                ->setParameter('status', $persist['status'])
+                ->setParameter('count', $persist['count'])
+                ->execute();
+        }
+
+        public function edit($persist)
+        {
+            $qb = $this->em->createQueryBuilder();
+
+            return $qb
+                ->update('storage')
+                ->set('car', ':car')
+                ->set('status', ':status')
+                ->set('count', ':count')
+                ->where('id = :id')
+                ->setParameter('car', $persist['car'])
+                ->setParameter('status', $persist['status'])
+                ->setParameter('count', $persist['count'])
+                ->setParameter('id', $persist['id'])
+                ->execute();
+        }
+
+        public function delete($id)
+        {
+            $qb = $this->em->createQueryBuilder();
+            return $qb
+                ->delete('storage', 's')
+                ->where('s.id = :id')
+                ->setParameter('id', $id)
+                ->execute();
+        }
     }
 ?>

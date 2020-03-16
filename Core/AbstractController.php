@@ -1,8 +1,8 @@
 <?php
     namespace Core;
 
-    use \Config\DB;
     use \Plasticbrain\FlashMessages\FlashMessages;
+    use \Model\User;
 
     class AbstractController 
     {
@@ -17,10 +17,16 @@
          */
         public $msg;
 
+        /**
+         * Auth user
+         * @var User
+         */
+        private $user;
+
         public function __construct()
         {
             $this->params = [];
-            $db = new DB();
+            $this->user = new User();
             $this->msg = new FlashMessages();
         }
 
@@ -36,6 +42,7 @@
             $this->params = array_merge($this->params, $params);
             extract($this->params);
             $flashbag = $this->msg;
+            $user = $this->user->isAuth();
             ob_start();
             require("../Views/" . $template);
             $content = ob_get_clean();

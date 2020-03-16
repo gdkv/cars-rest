@@ -2,6 +2,22 @@
 
 Реализовать веб-сервис "Автосклад" (json-апи, включая JWT)
 
+### Запуск 
+
+- PHP >= 7.4 (Ctype, iconv, JSON, PCRE, Session, SimpleXML, Tokenizer, php-pgsql)
+- PostgreSQL >= 12
+- Composer
+
+Строку с подключением к БД нужно прописать в файле ```Config\db.php```
+
+Закинуть в БД дамп из файла cars_rest.sql
+
+```
+composer install
+php -S localhost:8888
+```
+
+
 #### Автомобили
 
 id, марка, модель, год выпуска, комплектация, тех. характеристики - json-array с возможностью поиска по нему внутри базы

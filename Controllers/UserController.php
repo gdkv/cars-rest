@@ -16,43 +16,42 @@
             );
         }
 
-        public function login($login, $password)
+        public function login($request=null)
         {
-            $user = new User();
-            $user_data = $user->findByLogin($login);
-            if (isset($user_data) && password_verify($password, $user_data['password']) ){
-                $jwt = JWT::encode(
-                    Helpers::generateTokenData($user_data['id'], $user_data['login']), 
-                    Helpers::SECRET_KEY
-                );
-                setcookie("jwt", $jwt, time()+24*60*60, "/");
-                $this->renderJson(
-                    [
-                        'status' => 'Login success',
-                        'jwt' => $jwt,
-                    ]
-                );
-               
+            if (is_array($request) && count($request)){
+                foreach($request as $formData){
+                    $form[$formData['name']] = $formData['value'];
+                }
+            }
+            if ($form['login'] && $form['password']){
+                $user = new User();
+                $user_data = $user->findByLogin($form['login']);
+                if (isset($user_data) && password_verify($form['password'], $user_data['password']) ){
+                    $jwt = JWT::encode(
+                        Helpers::generateTokenData($user_data['id'], $user_data['login']), 
+                        Helpers::SECRET_KEY
+                    );
+                    setcookie("jwt", $jwt, time()+24*60*60, "/");
+                    $this->renderJson(
+                        [
+                            'status' => 'Login success',
+                            'jwt' => $jwt,
+                        ]
+                    );
+                
+                } else {
+                    http_response_code(401);
+                    $this->renderJson(['status' => 'Login failed',]);
+                }
             } else {
-                http_response_code(401);
-                $this->renderJson(['status' => 'Login failed',]);
+                $this->render('Auth/login.php', []);
             }
         }
 
-        public function isAuth($jwt="")
+        public function logout($request=null)
         {
-            if($jwt || isset($_COOKIE['jwt'])) {
-                try {
-                    $jwt = ($jwt ? $jwt : $_COOKIE['jwt']);
-                    $user = new User();
-                    $decoded = JWT::decode($jwt, Helpers::SECRET_KEY, ['HS256']);
-                    return $user->findByID($decoded->data->userID);
-                }
-                catch (\Exception $e){
-                    return false;
-                }
-            }
-            return false;
+            Helpers::removeTokenData();
         }
+
     }
 ?>
