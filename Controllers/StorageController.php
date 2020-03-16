@@ -23,6 +23,22 @@
             );
         }
 
+        public function detail($id)
+        {
+            $storages = new Storage();
+            $car = new Car();
+
+            $storage = $storages->findByID($id);
+            $this->renderJson(
+                [
+                    'id' => $storage['id'], 
+                    'car' => $car->findByID($storage['car']), 
+                    'status' => $storages->getStatus($storage['status']),
+                    'count' => $storage['count'],
+                ]
+            );
+        }
+
         public function status($status)
         {
             $storage = new Storage();

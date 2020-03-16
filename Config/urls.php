@@ -14,6 +14,7 @@
              */
             $this->urls = [
                 ['GET', '/cars/list', ['CarController', 'list']],
+                ['GET', '/cars/{id:\d+}', ['CarController', 'detail']],
                 ['POST', '/cars/add', ['CarController', 'add']],
                 ['POST', '/cars/edit', ['CarController', 'edit']],
                 ['POST', '/cars/delete', ['CarController', 'delete']],
@@ -21,6 +22,7 @@
                 ['POST', '/storage/edit', ['StorageController', 'edit']],
                 ['POST', '/storage/delete', ['StorageController', 'delete']],
                 ['GET', '/storage/list', ['StorageController', 'list']],
+                ['GET', '/storage/{id:\d+}', ['StorageController', 'detail']],
                 ['GET', '/storage/status/{status}', ['StorageController', 'status']],
                 ['POST', '/user/login', ['UserController', 'login']],
                 // ADMIN URLS

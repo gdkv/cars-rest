@@ -22,6 +22,15 @@
             );
         }
 
+        public function detail($id)
+        {
+            $cars = new Car();
+            $car = $cars->findByID($id);
+            $this->renderJson(
+                ['id' => $car['id'], 'brand' => $car['brand'], 'model' => $car['model'], 'specifications' => json_decode($car['specifications'], true), 'equipment' => $car['equipment'], 'year' => $car['year'],]
+            );
+        }
+
         public function add($request)
         {
             $cars = new Car();
