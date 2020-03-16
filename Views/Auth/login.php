@@ -6,12 +6,12 @@
         </div>
     <?php endif; ?>
     <div class="form-group">
-        <label for="login">Login</label>
+        <label for="login">Логин</label>
         <input type="text" class="form-control" id="login" placeholder="Login" name="login" value="" require>
     </div>
     <div class="form-group">
-        <label for="password">Password</label>
+        <label for="password">Пароль</label>
         <input type="password" class="form-control" id="password" placeholder="Enter a password" name="password" require>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Отправка</button>
 </form>

@@ -1,8 +1,6 @@
 <?php
     namespace Core;
 
-    use Model\User;
-
     /**
      * полезные в проекте функции
      */
@@ -18,15 +16,12 @@
         }
     
 
-        static public function generateTokenData($login)
+        static public function generateTokenData($id, $login)
         {
-            $user = new User();
-            $user_data = $user->findByLogin($login);
-
             $tokenId = base64_encode(random_bytes(32));
             $issuedAt = time();
             $notBefore = $issuedAt + 10;
-            $expire = $notBefore + 60;
+            $expire = $notBefore + 24 * 60 * 60;
             $serverName = self::siteURL(); 
 
             /*
@@ -39,8 +34,8 @@
                 'nbf'  => $notBefore,
                 'exp'  => $expire,
                 'data' => [
-                    'userID'   => $user_data['id'],
-                    'userLogin' => $user_data['login'], 
+                    'userID'   => $id,
+                    'userLogin' => $login, 
                 ]
             ];
         }

@@ -41,7 +41,8 @@
                     $controller = new $controller_name();
                     // if httpMethod === POST, get response and convert to array
                     if ($this->httpMethod === 'POST'){
-                        $vars = json_decode(file_get_contents("php://input"), true);
+                        // print(file_get_contents("php://input"));
+                        $vars = json_decode(file_get_contents("php://input"), true) ? : [];
                     }
                     call_user_func_array([$controller, $action], $vars);
                     break;
